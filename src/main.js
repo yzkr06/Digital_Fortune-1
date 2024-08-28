@@ -22,7 +22,12 @@ function onDeviceShake() {
     }
 }
 
+// State to prevent multiple rapid triggers
 var shakeTriggered = false;
+var debounceTimeout;
+var lastAccelerations = { x: 0, y: 0, z: 0 };
+var smoothingFactor = 0.2;
+var threshold = 10; // Adjust this value as needed
 
 function handleDeviceMotion(event) {
     var acceleration = event.accelerationIncludingGravity;
@@ -32,24 +37,38 @@ function handleDeviceMotion(event) {
         var y = acceleration.y || 0;
         var z = acceleration.z || 0;
 
-        console.log(`Acceleration - x: ${x}, y: ${y}, z: ${z}`); // デバッグ用ログ
+        // Smooth the acceleration values
+        x = lastAccelerations.x * (1 - smoothingFactor) + x * smoothingFactor;
+        y = lastAccelerations.y * (1 - smoothingFactor) + y * smoothingFactor;
+        z = lastAccelerations.z * (1 - smoothingFactor) + z * smoothingFactor;
 
-        var threshold = 10;
+        lastAccelerations.x = x;
+        lastAccelerations.y = y;
+        lastAccelerations.z = z;
+
+        console.log(`Smoothed Acceleration - x: ${x}, y: ${y}, z: ${z}`); // Debug log
+
         if (Math.abs(x) > threshold || Math.abs(y) > threshold || Math.abs(z) > threshold) {
             if (!shakeTriggered) {
                 shakeTriggered = true;
                 onDeviceShake();
-                // Reset the flag after a short delay
-                setTimeout(function() {
+                // Reset the flag after a delay
+                clearTimeout(debounceTimeout);
+                debounceTimeout = setTimeout(function() {
                     shakeTriggered = false;
-                }, 3000);
+                }, 3000); // Adjust the debounce timeout as needed
             }
+        } else {
+            // Reset shakeTriggered if the movement is below the threshold
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(function() {
+                shakeTriggered = false;
+            }, 500); // Shorter debounce timeout for no movement
         }
     }
 }
 
 if (window.DeviceMotionEvent) {
-    // Attempt to request permission if needed (modern browsers might handle this automatically)
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
         DeviceMotionEvent.requestPermission().then(permissionState => {
             if (permissionState === 'granted') {
