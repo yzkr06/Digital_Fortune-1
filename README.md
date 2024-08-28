@@ -4,3 +4,4 @@ simple digital fortune webtool
 このアプリケーションは私のTypeScript勉強用に作られたものです。
 ## 機能
 このwebツールはスマホをふることでおみくじをひけます。
+https://aet42.github.io/Digital_Fortune/src/index.html
