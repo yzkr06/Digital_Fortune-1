@@ -27,7 +27,7 @@ var shakeTriggered = false;
 var debounceTimeout;
 var lastAccelerations = { x: 0, y: 0, z: 0 };
 var smoothingFactor = 0.2;
-var threshold = 50; // Adjust this value as needed
+var threshold = 15; // Adjust this value as needed
 
 function handleDeviceMotion(event) {
     var acceleration = event.accelerationIncludingGravity;
