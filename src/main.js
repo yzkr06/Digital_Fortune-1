@@ -17,13 +17,11 @@ function getRandomPage() {
 
 function onDeviceShake() {
     var randomPage = getRandomPage();
-    // Confirm with the user before redirecting
     if (confirm("おみくじを引きますか？")) {
         window.location.href = randomPage;
     }
 }
 
-// State to prevent multiple rapid triggers
 var shakeTriggered = false;
 
 function handleDeviceMotion(event) {
@@ -33,16 +31,18 @@ function handleDeviceMotion(event) {
         var x = acceleration.x || 0;
         var y = acceleration.y || 0;
         var z = acceleration.z || 0;
-        
-        if (Math.abs(x) > 8 || Math.abs(y) > 8 || Math.abs(z) > 8) {
-            // To prevent multiple triggers from a single shake
+
+        console.log(`Acceleration - x: ${x}, y: ${y}, z: ${z}`); // デバッグ用ログ
+
+        var threshold = 10;
+        if (Math.abs(x) > threshold || Math.abs(y) > threshold || Math.abs(z) > threshold) {
             if (!shakeTriggered) {
                 shakeTriggered = true;
                 onDeviceShake();
                 // Reset the flag after a short delay
                 setTimeout(function() {
                     shakeTriggered = false;
-                }, 2000);
+                }, 3000);
             }
         }
     }
@@ -51,7 +51,6 @@ function handleDeviceMotion(event) {
 if (window.DeviceMotionEvent) {
     // Attempt to request permission if needed (modern browsers might handle this automatically)
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
-        // iOS 13+ devices
         DeviceMotionEvent.requestPermission().then(permissionState => {
             if (permissionState === 'granted') {
                 window.addEventListener('devicemotion', handleDeviceMotion);
@@ -60,7 +59,6 @@ if (window.DeviceMotionEvent) {
             }
         }).catch(console.error);
     } else {
-        // For devices that do not require permission
         window.addEventListener('devicemotion', handleDeviceMotion);
     }
 } else {
