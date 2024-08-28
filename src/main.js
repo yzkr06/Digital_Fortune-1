@@ -17,7 +17,7 @@ function getRandomPage() {
 
 function onDeviceShake() {
     var randomPage = getRandomPage();
-    if (confirm("おみくじを引きますか？")) {
+    if (confirm("結果を見よう")) {
         window.location.href = randomPage;
     }
 }
