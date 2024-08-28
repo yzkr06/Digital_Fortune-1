@@ -1,5 +1,3 @@
-const firstPage = "src/index.html";
-
 document.getElementById('retryButton').addEventListener('click', () => {
-    window.location.href = firstPage;
+    window.location.href = "https://aet42.github.io/Digital_Fortune/src/index.html";
 });
