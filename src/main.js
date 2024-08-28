@@ -20,7 +20,6 @@ function onDeviceShake() {
     window.location.href = randomPage;
 }
 
-// State to prevent multiple rapid triggers
 var shakeTriggered = false;
 
 function handleDeviceMotion(event) {
@@ -31,16 +30,13 @@ function handleDeviceMotion(event) {
         var y = acceleration.y || 0;
         var z = acceleration.z || 0;
         
-        // Adjusted threshold values for quick response
         if (Math.abs(x) > 5 || Math.abs(y) > 5 || Math.abs(z) > 5) {
-            // To prevent multiple triggers from a single shake
             if (!shakeTriggered) {
                 shakeTriggered = true;
                 onDeviceShake();
-                // Reset the flag after a short delay
                 setTimeout(function() {
                     shakeTriggered = false;
-                }, 2000); // 2 seconds to prevent multiple rapid triggers
+                }, 2000);
             }
         }
     }
