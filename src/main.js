@@ -1,4 +1,4 @@
-alert("スマホを振っておみくじをひこう!");
+alert("スマホを振っておみくじをひこう！");
 
 var pages = [
     "resultpages/page1.html",
@@ -17,7 +17,10 @@ function getRandomPage() {
 
 function onDeviceShake() {
     var randomPage = getRandomPage();
-    window.location.href = randomPage;
+    // Confirm with the user before redirecting
+    if (confirm("おみくじを引きますか？")) {
+        window.location.href = randomPage;
+    }
 }
 
 // State to prevent multiple rapid triggers
@@ -31,8 +34,7 @@ function handleDeviceMotion(event) {
         var y = acceleration.y || 0;
         var z = acceleration.z || 0;
         
-        // Adjusted threshold values for quick response
-        if (Math.abs(x) > 5 || Math.abs(y) > 5 || Math.abs(z) > 5) {
+        if (Math.abs(x) > 8 || Math.abs(y) > 8 || Math.abs(z) > 8) {
             // To prevent multiple triggers from a single shake
             if (!shakeTriggered) {
                 shakeTriggered = true;
@@ -40,10 +42,27 @@ function handleDeviceMotion(event) {
                 // Reset the flag after a short delay
                 setTimeout(function() {
                     shakeTriggered = false;
-                }, 2000); // 2 seconds to prevent multiple rapid triggers
+                }, 2000);
             }
         }
     }
 }
 
-window.addEventListener('devicemotion', handleDeviceMotion);
+if (window.DeviceMotionEvent) {
+    // Attempt to request permission if needed (modern browsers might handle this automatically)
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        // iOS 13+ devices
+        DeviceMotionEvent.requestPermission().then(permissionState => {
+            if (permissionState === 'granted') {
+                window.addEventListener('devicemotion', handleDeviceMotion);
+            } else {
+                alert("デバイスのモーションイベントのアクセスが許可されていません。");
+            }
+        }).catch(console.error);
+    } else {
+        // For devices that do not require permission
+        window.addEventListener('devicemotion', handleDeviceMotion);
+    }
+} else {
+    alert("このデバイスはデバイストリガーをサポートしていません。");
+}
