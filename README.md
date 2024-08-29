@@ -7,4 +7,4 @@ ver.0.1
 フォルダ構成は何も考えて作られていないので今後更新予定です。
 ## 機能
 このwebツールはスマホをふることでおみくじをひけます。
-https://aet42.github.io/Digital_Fortune/src/index.html
+https://aet42.github.io/Digital_Fortune/startpage.html
