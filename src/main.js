@@ -68,18 +68,27 @@ function handleDeviceMotion(event) {
     }
 }
 
-if (window.DeviceMotionEvent) {
-    if (typeof DeviceMotionEvent.requestPermission === 'function') {
-        DeviceMotionEvent.requestPermission().then(permissionState => {
-            if (permissionState === 'granted') {
-                window.addEventListener('devicemotion', handleDeviceMotion);
-            } else {
-                alert("デバイスのモーションイベントのアクセスが許可されていません。");
-            }
-        }).catch(console.error);
-    } else {
-        window.addEventListener('devicemotion', handleDeviceMotion);
-    }
-} else {
-    alert("このデバイスはデバイストリガーをサポートしていません。");
+const requestDeviceOrientationPermission = () => {
+  if (
+    DeviceOrientationEvent &&
+    typeof DeviceOrientationEvent.requestPermission === 'function'
+  ) {
+    // iOS 13+ の Safari
+    // 許可を取得
+    DeviceOrientationEvent.requestPermission()
+    .then(permissionState => {
+      if (permissionState === 'granted') {
+        window.addEventListener('deviceorientation', e => {
+        }）
+      } else {
+        alert("DeviceMotionEventが有効になっていません")
+      }
+    })
+    .catch(console.error) // https通信でない場合などで許可を取得できなかった場合
+  } else {
+    alert("ご使用のブラウザはこのサイトでサポートされていない可能性があります")
+  }
 }
+
+const startButton = document.getElementById("start-button")
+startButton.addEventListener('click', requestDeviceOrientationPermission, false)
