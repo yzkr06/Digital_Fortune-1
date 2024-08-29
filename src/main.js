@@ -1,6 +1,5 @@
 alert("デバイスを振っておみくじをひこう！");
 
-// ランダムに移動するページのリスト
 var pages = [
     "resultpages/page1.html",
     "resultpages/page2.html",
@@ -11,19 +10,16 @@ var pages = [
     "resultpages/page7.html"
 ];
 
-// ランダムなページを選ぶ関数
 function getRandomPage() {
     var randomIndex = Math.floor(Math.random() * pages.length);
     return pages[randomIndex];
 }
 
-// デバイスを振ったときの処理
 function onDeviceShake() {
     var randomPage = getRandomPage();
     window.location.href = randomPage;
 }
 
-// デバイスモーションの許可を求める関数
 function requestMotionPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
         DeviceMotionEvent.requestPermission()
@@ -40,7 +36,6 @@ function requestMotionPermission() {
     }
 }
 
-// デバイスの振動を検知してランダムにページをリダイレクト
 function handleDeviceMotion(event) {
     var acceleration = event.accelerationIncludingGravity;
     if (acceleration) {
@@ -48,7 +43,6 @@ function handleDeviceMotion(event) {
         var y = acceleration.y || 0;
         var z = acceleration.z || 0;
 
-        // iOS対応のために閾値を調整
         var threshold = 25;
         if (Math.abs(x) > threshold || Math.abs(y) > threshold || Math.abs(z) > threshold) {
             onDeviceShake();
