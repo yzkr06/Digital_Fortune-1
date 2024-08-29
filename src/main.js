@@ -31,7 +31,7 @@ function requestMotionPermission() {
                 if (permissionState === 'granted') {
                     window.addEventListener("devicemotion", handleDeviceMotion);
                 } else {
-                    alert("デバイスモーションの許可が必要です。");
+                    alert("デバイスモーションの許可が必要です。設定アプリで「モーションと方向のアクセス」をオンにしてください。");
                 }
             })
             .catch(console.error);
