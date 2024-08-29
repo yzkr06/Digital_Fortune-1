@@ -31,7 +31,7 @@ window.addEventListener("devicemotion", function(event) {
         var z = acceleration.z || 0;
 
         // しきい値を超えた振動を検知
-        var threshold = 15;  // しきい値は必要に応じて調整
+        var threshold = 20;  // しきい値は必要に応じて調整
         if (Math.abs(x) > threshold || Math.abs(y) > threshold || Math.abs(z) > threshold) {
             onDeviceShake();
         }
