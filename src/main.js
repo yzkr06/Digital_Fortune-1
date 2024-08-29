@@ -67,28 +67,3 @@ function handleDeviceMotion(event) {
         }
     }
 }
-
-const requestDeviceMotionPermission = () => {
-  if (window.DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function') {
-    // iOS 13+ の Safari
-    DeviceMotionEvent.requestPermission()
-    .then(permissionState => {
-      if (permissionState === 'granted') {
-        window.addEventListener('devicemotion', handleDeviceMotion);
-      } else {
-        alert("DeviceMotionEventが有効になっていません");
-      }
-    })
-    .catch(console.error); // https通信でない場合などで許可を取得できなかった場合
-  } else {
-    // DeviceMotionEvent のサポートがあるか確認
-    if (window.DeviceMotionEvent) {
-      window.addEventListener('devicemotion', handleDeviceMotion);
-    } else {
-      alert("ご使用のブラウザはこのサイトでサポートされていない可能性があります");
-    }
-  }
-};
-
-const startButton = document.getElementById("start-button");
-startButton.addEventListener('click', requestDeviceMotionPermission, false);
