@@ -1,4 +1,5 @@
-alert("デバイスを振っておみくじをひこう！")
+alert("デバイスを振っておみくじをひこう！");
+
 // ランダムに移動するページのリスト
 var pages = [
     "resultpages/page1.html",
@@ -22,18 +23,40 @@ function onDeviceShake() {
     window.location.href = randomPage;
 }
 
+// デバイスモーションの許可を求める関数
+function requestMotionPermission() {
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission()
+            .then(permissionState => {
+                if (permissionState === 'granted') {
+                    window.addEventListener("devicemotion", handleDeviceMotion);
+                } else {
+                    alert("デバイスモーションの許可が必要です。");
+                }
+            })
+            .catch(console.error);
+    } else {
+        window.addEventListener("devicemotion", handleDeviceMotion);
+    }
+}
+
 // デバイスの振動を検知してランダムにページをリダイレクト
-window.addEventListener("devicemotion", function(event) {
+function handleDeviceMotion(event) {
     var acceleration = event.accelerationIncludingGravity;
     if (acceleration) {
         var x = acceleration.x || 0;
         var y = acceleration.y || 0;
         var z = acceleration.z || 0;
 
-        // しきい値を超えた振動を検知
-        var threshold = 35;  // しきい値は必要に応じて調整
+        // iOS対応のために閾値を調整
+        var threshold = 25;
         if (Math.abs(x) > threshold || Math.abs(y) > threshold || Math.abs(z) > threshold) {
             onDeviceShake();
         }
     }
-});
+}
+
+// ページ読み込み時にモーションセンサーの許可を要求
+window.onload = function() {
+    requestMotionPermission();
+};
