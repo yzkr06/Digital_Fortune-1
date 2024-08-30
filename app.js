@@ -38,6 +38,6 @@ function initializeMotionListeners() {
         });
     } else {
         console.error('DeviceOrientationEvent is not supported.');
-        // ユーザーに対するフィードバックを追加することもできます
+        alert("error");
     }
 }
