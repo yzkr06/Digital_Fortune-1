@@ -20,22 +20,6 @@ function onDeviceShake() {
     window.location.href = randomPage;
 }
 
-function requestMotionPermission() {
-    if (typeof DeviceMotionEvent.requestPermission === 'function') {
-        DeviceMotionEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    window.addEventListener("devicemotion", handleDeviceMotion);
-                } else {
-                    alert("デバイスモーションの許可が必要です。設定アプリで「モーションと方向のアクセス」をオンにしてください。");
-                }
-            })
-            .catch(console.error);
-    } else {
-        window.addEventListener("devicemotion", handleDeviceMotion);
-    }
-}
-
 function handleDeviceMotion(event) {
     var acceleration = event.accelerationIncludingGravity;
     if (acceleration) {
@@ -49,8 +33,3 @@ function handleDeviceMotion(event) {
         }
     }
 }
-
-// ページ読み込み時にモーションセンサーの許可を要求
-window.onload = function() {
-    requestMotionPermission();
-};
