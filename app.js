@@ -3,14 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     button.addEventListener('click', function() {
         if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-            // iOS 13+ devices
             DeviceOrientationEvent.requestPermission()
                 .then(permissionState => {
                     if (permissionState === 'granted') {
-                        // Permission granted
                         initializeMotionListeners();
                     } else {
-                        // Permission denied
                         console.warn('Motion permission denied.');
                     }
                 })
@@ -18,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error('Error requesting motion permission:', error);
                 });
         } else {
-            // Non-iOS 13+ or permission not required
             initializeMotionListeners();
         }
     });
