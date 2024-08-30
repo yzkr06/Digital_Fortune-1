@@ -18,11 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function onDeviceShake() {
         var randomPage = getRandomPage();
-        console.log('Navigating to:', randomPage); // デバッグ用
         window.location.href = randomPage;
     }
-
-    var isShaking = false;
 
     function handleDeviceMotion(event) {
         var acceleration = event.accelerationIncludingGravity;
@@ -31,15 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
             var y = acceleration.y || 0;
             var z = acceleration.z || 0;
 
-            var threshold = 10; // 閾値を下げて感度を向上
+            var threshold = 15; // デバイスが振られたと見なす閾値
             if (Math.abs(x) > threshold || Math.abs(y) > threshold || Math.abs(z) > threshold) {
-                if (!isShaking) {
-                    isShaking = true;
-                    onDeviceShake();
-                    setTimeout(function() {
-                        isShaking = false;
-                    }, 1000); // デバウンスのために1秒待機
-                }
+                onDeviceShake();
             }
         }
     }
@@ -48,7 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if ('DeviceMotionEvent' in window) {
             window.addEventListener('devicemotion', handleDeviceMotion);
         } else {
-            alert('このデバイスはモーションセンサーに対応していません。');
+            console.error('DeviceMotionEvent is not supported.');
+            // ユーザーに対するフィードバックを追加することもできます
         }
     }
 
