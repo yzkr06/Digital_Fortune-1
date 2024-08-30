@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = randomPage;
     }
 
+    var isShaking = false;
+    var debounceTimeout;
+
     function handleDeviceMotion(event) {
         var acceleration = event.accelerationIncludingGravity;
         if (acceleration) {
@@ -30,7 +33,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
             var threshold = 15; // デバイスが振られたと見なす閾値
             if (Math.abs(x) > threshold || Math.abs(y) > threshold || Math.abs(z) > threshold) {
-                onDeviceShake();
+                if (!isShaking) {
+                    isShaking = true;
+                    // デバウンス処理: 1秒間に複数回振られるのを防ぐ
+                    clearTimeout(debounceTimeout);
+                    debounceTimeout = setTimeout(function() {
+                        isShaking = false;
+                    }, 1000);
+
+                    onDeviceShake();
+                }
             }
         }
     }
@@ -40,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.addEventListener('devicemotion', handleDeviceMotion);
         } else {
             console.error('DeviceMotionEvent is not supported.');
-            // ユーザーに対するフィードバックを追加することもできます
+            alert("デバイスモーションイベントがサポートされていません。");
         }
     }
 
