@@ -25,11 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.disabled = false; // ボタンを再度有効化
                 });
         } else {
-            // iOS以外のデバイスで直接モーションリスナーを初期化
             console.log('DeviceMotionEvent is available.');
-            // main.jsを適切に初期化するコードをここに追加できます
-            // 例えば、直接main.htmlにリダイレクトする
-            window.location.href = 'main.html'; // ここでmain.htmlにリダイレクトする
+            window.location.href = 'https://aet42.github.io/Digital_Fortune/src/index.html';
         }
     });
 });
