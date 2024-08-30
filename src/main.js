@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var y = acceleration.y || 0;
             var z = acceleration.z || 0;
 
-            var threshold = 25;
+            var threshold = 15;
             if (Math.abs(x) > threshold || Math.abs(y) > threshold || Math.abs(z) > threshold) {
                 onDeviceShake();
             }
