@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.log('Motion permission granted.');
                         // パーミッションが許可された場合、main.jsの機能を動作させるためにリダイレクトまたは初期化を行う
                         // 例えば、リダイレクトする場合:
-                        window.location.href = 'main.html'; // ここでmain.htmlにリダイレクトする
+                        window.location.href = 'https://aet42.github.io/Digital_Fortune/src/index.html';
                     } else {
                         console.warn('Motion permission denied.');
                         alert('モーションセンサーの許可が必要です。');
